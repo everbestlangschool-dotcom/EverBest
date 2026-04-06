@@ -9,26 +9,26 @@
         :root {
             --base-camp: #2c3e50;
             --forest-zone: #27ae60;
-            --rock-zone: #7f8c8d;
             --glacier-zone: #2980b9;
-            --sky-high: #8e44ad;
             --accent: #f1c40f;
             --white: #ecf0f1;
+            --dark: #1a1a1a;
+            --card-bg: #222;
         }
 
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
-            background-color: #1a1a1a;
+            background-color: var(--dark);
             color: var(--white);
-            line-height: 1.6;
+            scroll-behavior: smooth;
         }
 
-        /* --- ШАПКА / ОБЛОЖКА --- */
+        /* --- ШАПКА --- */
         .hero {
-            height: 60vh;
+            height: 40vh;
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                        url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+                        url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -39,144 +39,128 @@
             border-bottom: 5px solid var(--accent);
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            font-weight: 900;
-        }
+        .hero h1 { font-size: 3rem; text-transform: uppercase; letter-spacing: 5px; margin: 0; }
 
-        .hero p {
-            font-size: 1.2rem;
-            background: rgba(0,0,0,0.5);
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
+        /* --- КОНТЕЙНЕРЫ --- */
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; }
+        .hidden { display: none; }
 
-        /* --- КАРТА МАРШРУТА (КОНТЕЙНЕР) --- */
-        .map-container {
-            max-width: 800px;
-            margin: -50px auto 50px;
-            padding: 20px;
-            position: relative;
-        }
-
-        /* --- СТИЛЬ ОДНОГО "МЕТРА" (УРОКА) --- */
+        /* --- КАРТОЧКИ УРОКОВ --- */
         .step {
-            background: #222;
+            background: var(--card-bg);
             border-left: 10px solid var(--base-camp);
             margin-bottom: 15px;
             padding: 20px;
             border-radius: 0 10px 10px 0;
-            transition: transform 0.3s ease;
-            position: relative;
+            transition: 0.3s;
         }
+        .step:hover { transform: translateX(10px); background: #2a2a2a; }
+        .altitude { color: var(--accent); font-weight: bold; font-size: 0.9rem; }
 
-        .step:hover {
-            transform: translateX(10px);
-            background: #2a2a2a;
+        /* --- МАКЕТ УРОКА (НОВОЕ) --- */
+        .lesson-panel { background: #222; padding: 30px; border-radius: 15px; border: 1px solid #444; }
+        .video-container { 
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; 
+            border-radius: 10px; background: #000; margin: 20px 0;
         }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        
+        .practice-zone { background: #2d2d2d; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .quiz-input { background: #444; border: 2px solid #555; color: white; padding: 8px; border-radius: 5px; margin: 5px; }
+        
+        .must-know { border: 2px dashed var(--accent); padding: 15px; border-radius: 10px; background: rgba(241, 196, 15, 0.1); }
 
-        .step.locked {
-            opacity: 0.5;
-            filter: grayscale(1);
-            cursor: not-allowed;
+        .btn {
+            background: var(--accent); color: #000; padding: 12px 25px; 
+            text-decoration: none; font-weight: bold; border-radius: 5px; 
+            display: inline-block; cursor: pointer; border: none; margin-top: 10px;
         }
-
-        .altitude {
-            font-weight: bold;
-            color: var(--accent);
-            font-size: 0.9rem;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .step-title {
-            font-size: 1.4rem;
-            margin: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .status-icon {
-            font-size: 1.2rem;
-        }
-
-        /* --- ЦВЕТОВЫЕ ЗОНЫ --- */
-        .zone-intro { border-color: var(--base-camp); }
-        .zone-forest { border-color: var(--forest-zone); }
-        .zone-rock { border-color: var(--rock-zone); }
-
-        /* --- КНОПКА ДЕЙСТВИЯ --- */
-        .btn-start {
-            background: var(--accent);
-            color: #000;
-            padding: 10px 20px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            display: inline-block;
-            margin-top: 15px;
-        }
-
+        .btn-back { background: #7f8c8d; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <header class="hero">
-        <h1>ENGLISH EVEREST</h1>
-        <p>Твое восхождение от 5364м до 8848м. Каждый шаг — это знание.</p>
-    </header>
+    <div id="main-map">
+        <header class="hero">
+            <h1>ENGLISH EVEREST</h1>
+            <p>Твое восхождение началось!</p>
+        </header>
 
-    <main class="map-container">
-
-        <h2 style="color: var(--base-camp);">[ Base Camp: Intro ]</h2>
-
-        <div class="step zone-intro">
-            <span class="altitude">5365 m</span>
-            <div class="step-title">
-                Урок 1: Личные местоимения
-                <span class="status-icon">✅</span>
+        <main class="container">
+            <h2 style="color: var(--base-camp);">[ Base Camp ]</h2>
+            
+            <div class="step" style="border-color: var(--base-camp);">
+                <span class="altitude">5365 m</span>
+                <h3>Урок 1: Личные местоимения</h3>
+                <p>База любого предложения. Кто «ты» в этом мире?</p>
+                <button class="btn" onclick="openLesson(1)">Начать подъем</button>
             </div>
-            <p>Кто ты в этой экспедиции? Учим "I, You, We, They".</p>
-            <a href="#" class="btn-start">Повторить</a>
-        </div>
 
-        <div class="step zone-intro">
-            <span class="altitude">5366 m</span>
-            <div class="step-title">
-                Урок 2: Числа (Cardinals)
-                <span class="status-icon">🔓</span>
+            </main>
+    </div>
+
+    <div id="lesson-content" class="container hidden">
+        <button class="btn btn-back" onclick="closeLesson()">← Вернуться к карте</button>
+        
+        <div class="lesson-panel">
+            <h1 id="l-title">Название урока</h1>
+
+            <h3>1. Теория: Посмотри видео</h3>
+            <div class="video-container">
+                <iframe id="l-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
             </div>
-            <p>Считаем метры и ресурсы. От 0 до 100.</p>
-            <a href="#" class="btn-start">Начать подъем</a>
-        </div>
 
-        <div class="step zone-intro">
-            <span class="altitude">5367 m</span>
-            <div class="step-title">
-                Урок 3: Порядок слов
-                <span class="status-icon">🔒</span>
+            <h3>2. Практика: Проверь себя</h3>
+            <div class="practice-zone" id="l-practice">
+                <p>Переведи на английский слово <b>"Они"</b>:</p>
+                <input type="text" class="quiz-input" id="q1">
+                <button class="btn" onclick="checkAnswer()">Проверить</button>
+                <p id="feedback"></p>
             </div>
-            <p>Строим правильный маршрут предложения.</p>
-        </div>
 
-
-        <br>
-        <h2 style="color: var(--forest-zone);">[ Green Valley: A1-A2 ]</h2>
-
-        <div class="step zone-forest locked">
-            <span class="altitude">6522 m</span>
-            <div class="step-title">
-                Урок 1: Глагол To Be (Утверждение)
-                <span class="status-icon">🔒</span>
+            <h3>3. Что нужно вынести с урока:</h3>
+            <div class="must-know">
+                <ul id="l-summary">
+                    <li>Местоимение "I" (Я) всегда пишется с большой буквы.</li>
+                    <li>"You" — это и "ты", и "вы".</li>
+                    <li>"It" используется для предметов и животных.</li>
+                </ul>
             </div>
-            <p>Доступ откроется после прохождения Intro.</p>
         </div>
+    </div>
 
-        </main>
+    <script>
+        // Функция открытия урока
+        function openLesson(id) {
+            document.getElementById('main-map').classList.add('hidden');
+            document.getElementById('lesson-content').classList.remove('hidden');
+            window.scrollTo(0,0);
+            
+            // Здесь в будущем можно менять контент в зависимости от id
+            if(id === 1) {
+                document.getElementById('l-title').innerText = "Урок 1: Личные местоимения";
+            }
+        }
+
+        // Функция закрытия урока
+        function closeLesson() {
+            document.getElementById('main-map').classList.remove('hidden');
+            document.getElementById('lesson-content').classList.add('hidden');
+        }
+
+        // Проверка ответа
+        function checkAnswer() {
+            const val = document.getElementById('q1').value.trim().toLowerCase();
+            const fb = document.getElementById('feedback');
+            if(val === 'they') {
+                fb.innerHTML = "✅ Верно! Ты поднялся еще на 10 метров!";
+                fb.style.color = "var(--forest-zone)";
+            } else {
+                fb.innerHTML = "❌ Ошибка. Проверь теорию и попробуй снова.";
+                fb.style.color = "#e74c3c";
+            }
+        }
+    </script>
 
 </body>
 </html>
