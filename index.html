@@ -13,12 +13,10 @@
             --card: #2c3e50;
             --text: #ecf0f1;
             --forest: #27ae60;
-            --error: #e74c3c;
         }
 
         body { font-family: 'Montserrat', sans-serif; margin: 0; background-color: var(--bg); color: var(--text); }
 
-        /* --- ЗАСТАВКА --- */
         .hero {
             height: 50vh;
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('trekking.png');
@@ -26,7 +24,6 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-bottom: 5px solid var(--accent);
         }
 
-        /* --- КАРТА --- */
         .map-section {
             position: sticky; top: 0; z-index: 100; background: rgba(26, 26, 26, 0.95);
             padding: 15px; border-bottom: 2px solid var(--accent); text-align: center;
@@ -34,7 +31,6 @@
         #tracker-svg { width: 100%; max-width: 900px; height: 100px; background: #222; border-radius: 10px; margin-top: 10px; }
         .altitude-display { font-size: 1.5rem; font-weight: bold; color: var(--accent); }
 
-        /* --- СПИСОК УРОКОВ --- */
         .journey-container { max-width: 800px; margin: 30px auto; padding: 20px; }
         .step {
             background: var(--card); margin-bottom: 15px; padding: 20px; border-radius: 12px;
@@ -46,24 +42,16 @@
         .grammar-topic { font-style: italic; font-size: 0.85rem; color: #bdc3c7; }
         .alt-tag { background: #1a1a1a; padding: 5px 10px; border-radius: 5px; font-weight: bold; min-width: 70px; text-align: center; }
 
-        /* --- ОКНО УРОКА --- */
         .lesson-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg); z-index: 200; display: none; overflow-y: auto; padding: 20px;
         }
         .lesson-content { max-width: 750px; margin: 0 auto; padding-bottom: 50px; }
         .lesson-img { width: 100%; border-radius: 10px; margin-bottom: 15px; border: 2px solid var(--accent); }
-        .video-box { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 10px; margin: 20px 0; }
         .btn-close { background: var(--accent); color: #000; padding: 10px 20px; border: none; border-radius: 5px; font-weight: 900; cursor: pointer; margin-bottom: 20px; }
         
-        /* УПРАЖНЕНИЯ */
-        .quiz-container { background: #222; padding: 25px; border-radius: 15px; border: 1px solid #444; margin-top: 20px; }
-        .quiz-row { margin-bottom: 15px; display: flex; align-items: center; font-size: 1.1rem; }
-        .quiz-row input { background: #333; border: 1px solid #555; color: white; padding: 8px; margin-left: 10px; border-radius: 5px; width: 150px; }
-        .rule-box { display: none; background: rgba(231, 76, 60, 0.2); border: 1px solid var(--error); padding: 15px; border-radius: 10px; margin-top: 15px; color: #ff9999; }
-        .btn-check { background: var(--forest); color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1rem; }
-
         #climber { transition: all 1s ease-in-out; }
+        .plane-icon { font-size: 16px; }
     </style>
 </head>
 <body>
@@ -88,21 +76,51 @@
 <div class="journey-container" id="steps-list"></div>
 
 <div id="lesson-overlay" class="lesson-overlay">
-    <div class="lesson-content" id="lesson-inner-content">
-        </div>
+    <div class="lesson-content" id="lesson-inner-content"></div>
 </div>
 
 <script>
     const lessonsData = [
-        { id: 1, meta: "Приземление в Катманду", en: "(Landing in Kathmandu)", grammar: "Personal Pronouns", alt: 1450, x: 50 },
-        { id: 2, meta: "Посадка на рейс в Луклу", en: "(Boarding the flight to Lukla)", grammar: "Cardinals (0-100)", alt: 1450, x: 150 },
-        { id: 3, meta: "Перелет над облаками", en: "(Flight above the clouds)", grammar: "Word Order", alt: 2100, x: 250 },
-        { id: 4, meta: "Приземление на краю скалы", en: "(Landing on the edge of a cliff)", grammar: "to be (Affirmative)", alt: 2860, x: 350 },
-        { id: 5, meta: "Акклиматизация: первые шаги", en: "(Acclimatization: first steps)", grammar: "to be (Negative)", alt: 2850, x: 400 },
-        { id: 6, meta: "Первый час в походе", en: "(First hour of trekking)", grammar: "to be (Yes/No Questions)", alt: 2840, x: 450 },
-        { id: 7, meta: "Духовная атмосфера тропы", en: "(Spiritual atmosphere of the trail)", grammar: "Possessive Adjectives", alt: 2830, x: 500 },
-        { id: 8, meta: "Встреча с караваном яков", en: "(Meeting a yak caravan)", grammar: "Plural Nouns", alt: 2820, x: 550 },
-        { id: 9, meta: "Разговор с гидом", en: "(Talking to the guide)", grammar: "What / How + to be", alt: 2810, x: 600 },
+        { id: 1, meta: "Приземление в Катманду", en: "(Landing in Kathmandu)", grammar: "Personal Pronouns", alt: 1450, x: 50, img: "kathmandu.png", 
+          desc: "Вы прибыли в аэропорт Катманду. Здесь и сейчас начинается ваше восхождение на Саммит. Удачи.", 
+          en_desc: "You have arrived at Kathmandu airport. Your ascent to the Summit begins here and now. Good luck." },
+        
+        { id: 2, meta: "Посадка на рейс в Луклу", en: "(Boarding the flight to Lukla)", grammar: "Cardinals (0-100)", alt: 1450, x: 150, img: "bording the flight to Lukla.png",
+          desc: "Благодаря лайфхакам сэкономим много сил и совершим перелет к следующему пункту назначения.",
+          en_desc: "Thanks to these hacks, we will save a lot of energy and fly to the next destination." },
+        
+        { id: 3, meta: "Перелет над облаками", en: "(Flight above the clouds)", grammar: "Word Order", alt: "✈️", x: 250, img: "flight above the clouds.png",
+          desc: "Сверху лучше видна перспектива. Во время полета из иллюминатора увидим весь предстоящий маршрут (overview).",
+          en_desc: "The perspective is clearer from above. During the flight, we will see the entire upcoming route (overview) from the window." },
+        
+        { id: 4, meta: "Приземление на краю скалы", en: "(Landing on the edge of a cliff)", grammar: "to be (Affirmative)", alt: 2860, x: 350, img: "landing on the edge of a cliff.png",
+          desc: "Приземлись в одном из самых опасных аэропортов на краю обрывистой скалы. Отсюда начитанется твое восхождение. Путь потребует усилий, но при этом подарить незабываемый опыт и навсегда изменит тебя.",
+          en_desc: "Land at one of the most dangerous airports on the edge of a steep cliff. Your ascent begins here. The journey will require effort, but it will provide an unforgettable experience and change you forever." },
+        
+        { id: 5, meta: "Акклиматизация: первые шаги", en: "(Acclimatization: first steps)", grammar: "to be (Negative)", alt: 2850, x: 400, img: "acclimatization first steps.jpg",
+          desc: "В первые дни похода очень важно не торопиться и уделить время акклиматизации. Это залог успешного покорения заветной вершины.",
+          en_desc: "In the first days of the trek, it is very important not to rush and take time for acclimatization. This is the key to successfully conquering the coveted summit." },
+        
+        { id: 6, meta: "Ворота в Непал", en: "(Gate to Nepal)", grammar: "to be (Yes/No Questions)", alt: 2840, x: 450, img: "gate in nepal.png",
+          desc: "Несколько уточняющих вопросов перед тем как покинуть город и окончательно выйти на тропу.",
+          en_desc: "A few clarifying questions before leaving the city and finally hitting the trail." },
+        
+        { id: 7, meta: "Первая деревня на маршруте", en: "(Cheplung Village)", grammar: "Possessive Adjectives", alt: 2830, x: 500, img: "cheplung village.jpg",
+          desc: "Кому принадлежат дома в деревне? Чьи это вещи?",
+          en_desc: "Who do the houses in the village belong to? Whose things are these?" },
+        
+        { id: 8, meta: "Встреча с караваном яков", en: "(Meeting a yak caravan)", grammar: "Plural Nouns", alt: 2820, x: 550, img: "meeting with yak caravan.png",
+          desc: "Сколько комплектов вещей ты взял с собой в рюкзак?",
+          en_desc: "How many sets of things did you pack in your backpack?" },
+        
+        { id: 9, meta: "Первый мост на маршруте", en: "(Bridge Suspension)", grammar: "What / How + to be", alt: 2810, x: 600, img: "suspension bridge.png",
+          desc: "Кто построил этот мост?",
+          en_desc: "Who built this bridge?" },
+        // ... остальные уроки 10-30
+    ];
+
+    // Добавляем остальные уроки (10-30) без изменений, как в прошлом коде
+    const extraLessons = [
         { id: 10, meta: "Указатели на тропе", en: "(Trail markers)", grammar: "This / That", alt: 2800, x: 650 },
         { id: 11, meta: "Привал и горячий чай", en: "(Break and hot tea)", grammar: "Review", alt: 2790, x: 680 },
         { id: 12, meta: "С новыми силами", en: "(With new strength)", grammar: "have, like, love, work", alt: 2780, x: 710 },
@@ -126,8 +144,10 @@
         { id: 30, meta: "Утренний подъем. Вспоминаем первый день", en: "(Morning rise. Recalling day one)", grammar: "Final Review", alt: 2600, x: 880 }
     ];
 
+    const allLessons = [...lessonsData, ...extraLessons];
     const list = document.getElementById('steps-list');
-    lessonsData.forEach(l => {
+    
+    allLessons.forEach(l => {
         const item = document.createElement('div');
         item.className = 'step';
         item.onclick = () => openLesson(l);
@@ -136,96 +156,41 @@
                 <p class="meta-title">${l.id}. ${l.meta} <span class="en-title">${l.en}</span></p>
                 <span class="grammar-topic">${l.grammar}</span>
             </div>
-            <div class="alt-tag">${l.alt}m</div>
+            <div class="alt-tag">${l.alt}${typeof l.alt === 'number' ? 'm' : ''}</div>
         `;
         list.appendChild(item);
     });
 
     function openLesson(l) {
-        const yCoord = l.x < 350 ? 80 - (l.x/7) : 30 + (l.x-350)/12; 
-        document.getElementById('climber').setAttribute('transform', `translate(${l.x}, ${yCoord})`);
-        document.getElementById('alt-val').innerText = l.alt;
+        // Логика движения по карте
+        const xVal = l.x;
+        const yCoord = xVal < 350 ? 80 - (xVal/7) : 30 + (xVal-350)/12; 
+        document.getElementById('climber').setAttribute('transform', `translate(${xVal}, ${yCoord})`);
+        document.getElementById('alt-val').innerText = typeof l.alt === 'number' ? l.alt : "---";
         document.getElementById('loc-name').innerText = `📍 ${l.meta}`;
 
         const inner = document.getElementById('lesson-inner-content');
         
-        if (l.id === 1) {
-            inner.innerHTML = `
-                <button class="btn-close" onclick="closeLesson()">← НАЗАД К МАРШРУТУ</button>
-                <img src="kathmandu.png" class="lesson-img">
-                <p><i>Вы прибыли в аэропорт Катманду. Здесь и сейчас начинается ваше восхождение на Саммит. Удачи. <br>
-                (You have arrived at Kathmandu airport. Your ascent to the Summit begins here and now. Good luck.)</i></p>
-                
-                <h3>1. Теория</h3>
-                <div class="video-box"> </div>
-
-                <h3>2. Проверь себя</h3>
-                <div class="quiz-container" id="quiz-1">
-                    <p>Впишите перевод местоимений (на английском):</p>
-                    <div class="quiz-row">She — <input type="text" id="ans1" placeholder="она"></div>
-                    <div class="quiz-row">They — <input type="text" id="ans2" placeholder="они"></div>
-                    <div class="quiz-row">He — <input type="text" id="ans3" placeholder="он"></div>
-                    <div class="quiz-row">We — <input type="text" id="ans4" placeholder="мы"></div>
-                    <div class="quiz-row">It — <input type="text" id="ans5" placeholder="оно"></div>
-                    <div id="rule-1" class="rule-box">Взгляни еще раз на правило и улучши свой результат!</div>
-                    <button class="btn-check" onclick="checkStep1()">Проверить и продолжить</button>
-                </div>
-
-                <div id="quiz-2" class="quiz-container" style="display:none">
-                    <p>А теперь наоборот (на английском):</p>
-                    <div class="quiz-row">Я — <input type="text" id="ans6"></div>
-                    <div class="quiz-row">Ты — <input type="text" id="ans7"></div>
-                    <div class="quiz-row">Он — <input type="text" id="ans8"></div>
-                    <div class="quiz-row">Она — <input type="text" id="ans9"></div>
-                    <div class="quiz-row">Оно — <input type="text" id="ans10"></div>
-                    <div class="quiz-row">Мы — <input type="text" id="ans11"></div>
-                    <div class="quiz-row">Они — <input type="text" id="ans12"></div>
-                    <div id="rule-2" class="rule-box">Взгляни еще раз на правило и улучши свой результат!</div>
-                    <button class="btn-check" onclick="checkStep2()">Завершить урок</button>
-                </div>
-            `;
-        } else {
-            inner.innerHTML = `<button class="btn-close" onclick="closeLesson()">← НАЗАД</button><h1>${l.meta}</h1><p>Контент урока ${l.id} находится в разработке.</p>`;
-        }
+        // Генерация контента урока
+        let contentHtml = `<button class="btn-close" onclick="closeLesson()">← НАЗАД</button>
+                           <h1 style="color:var(--accent)">${l.meta}</h1>
+                           <p style="font-size:0.8rem; color:#bdc3c7; margin-top:-10px;">${l.en}</p>`;
         
+        if (l.img) {
+            contentHtml += `<img src="${l.img}" class="lesson-img">`;
+        }
+
+        if (l.desc) {
+            contentHtml += `<p style="line-height:1.4"><i>${l.desc}</i></p>
+                            <p style="color:#bdc3c7; font-size:0.9rem;"><i>${l.en_desc}</i></p>`;
+        }
+
+        contentHtml += `<div style="background:#222; padding:20px; border-radius:10px; margin-top:20px;">
+                            <h3>Теория</h3><p>Раздел в разработке...</p>
+                        </div>`;
+
+        inner.innerHTML = contentHtml;
         document.getElementById('lesson-overlay').style.display = 'block';
-    }
-
-    function checkStep1() {
-        const a1 = document.getElementById('ans1').value.toLowerCase().trim();
-        const a2 = document.getElementById('ans2').value.toLowerCase().trim();
-        const a3 = document.getElementById('ans3').value.toLowerCase().trim();
-        const a4 = document.getElementById('ans4').value.toLowerCase().trim();
-        const a5 = document.getElementById('ans5').value.toLowerCase().trim();
-
-        if (a1 === 'she' && a2 === 'they' && a3 === 'he' && a4 === 'we' && a5 === 'it') {
-            document.getElementById('quiz-1').style.display = 'none';
-            document.getElementById('quiz-2').style.display = 'block';
-        } else {
-            document.getElementById('rule-1').style.display = 'block';
-        }
-    }
-
-    function checkStep2() {
-        const answers = [
-            document.getElementById('ans6').value.toLowerCase().trim(),
-            document.getElementById('ans7').value.toLowerCase().trim(),
-            document.getElementById('ans8').value.toLowerCase().trim(),
-            document.getElementById('ans9').value.toLowerCase().trim(),
-            document.getElementById('ans10').value.toLowerCase().trim(),
-            document.getElementById('ans11').value.toLowerCase().trim(),
-            document.getElementById('ans12').value.toLowerCase().trim()
-        ];
-        const correct = ['i', 'you', 'he', 'she', 'it', 'we', 'they'];
-        
-        const isAllCorrect = answers.every((val, index) => val === correct[index]);
-
-        if (isAllCorrect) {
-            alert("Потрясающе! Первый шаг к вершине сделан!");
-            closeLesson();
-        } else {
-            document.getElementById('rule-2').style.display = 'block';
-        }
     }
 
     function closeLesson() { document.getElementById('lesson-overlay').style.display = 'none'; }
